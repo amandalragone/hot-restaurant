@@ -9,8 +9,23 @@ var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-var reservations = [];
-var waitList =[];
+var reservations = [
+    {
+    customerName: "my name",
+    phoneNumber: "12345678",
+    customerEmail: "foefope@ihvojgor0",
+    customerID: "1"
+}
+];
+
+var waitList =[{
+    customerName: "your name",
+    phoneNumber: "0987654321",
+    customerEmail: "lofsdofsoo@grkogkpgr",
+    customerID: "2"
+}];
+
+
 
 function Reservation(customerName, phoneNumber, customerEmail, customerID) {
     this.customerName = customerName;
@@ -33,6 +48,43 @@ app.get("/reserve", function(req, res) {
     res.sendFile(path.join(__dirname, "make.html"));
 
 });
+
+app.get("/api/tables", function(req, res) {
+    return res.json(reservations);
+});
+
+app.get("/api/waitlist", function(req, res) {
+    return res.json(waitList);
+});
+
+app.post("/api/tables", function(req, res) {
+    // req.body hosts is equal to the JSON post sent from the user
+    // This works because of our body parsing middleware
+    var newReservation = req.body;
+  
+    // Using a RegEx Pattern to remove spaces from newCharacter
+    // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+    reservations.push(newReservation);
+
+    console.log(newReservation);
+  
+    res.json(newReservation);
+  });
+
+  app.post("/api/waitlist", function(req, res) {
+    // req.body hosts is equal to the JSON post sent from the user
+    // This works because of our body parsing middleware
+    var newReservation = req.body;
+  
+    // Using a RegEx Pattern to remove spaces from newCharacter
+    // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+    waitList.push(newReservation);
+
+    console.log(newReservation);
+  
+    res.json(newReservation);
+  });
+  
 
 app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
