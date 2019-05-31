@@ -14,13 +14,82 @@
                 <h1 class="display-4">Make a reservation</h1>
                 <p class="lead">Only 5 tables left!</p>
                 <hr class="my-4">
-                <a class="btn btn-primary btn-lg" href="#" role="button">View tables</a>
-                <a class="btn btn-primary btn-lg" href="#" role="button">Home page</a>
+                <a class="btn btn-primary btn-lg" href="/tables" role="button" id="tables">View tables</a>
+                <a class="btn btn-primary btn-lg" href="/" role="button">Home page</a>
               </div>
 
+              <form>
+                <div class="form-group">
+                  <label for="customerName">Name</label>
+                  <input type="text" class="form-control" id="customerName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="number" class="form-control" id="phoneNumber" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email address</label>
+                    <input type="email" class="form-control" id="customerEmail" placeholder="Enter your email address">
+                </div>
+                  <div class="form-group">
+                    <label for="customerID">Unique ID</label>
+                    <input type="text" class="form-control" id="customerID" placeholder="Enter your ID">
+                  </div>
+            
+                <button id="submit" class="btn btn-primary">Submit</button>
+              </form>
+
+
+              <a href="/api/tables">API Table Link</a>
+              <a href="/api/waitlist">API Wait List</a>
         </div>
         
 
+      
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+        
+        function Reservation(customerName, phoneNumber, customerEmail, customerID) {
+            this.customerName = customerName;
+            this.phoneNumber = phoneNumber;
+            this.customerEmail = customerEmail;
+            this.customerID = customerID;
+        }
+
+        $("#submit").on("click", function(event){
+            
+            event.preventDefault(event);
+
+            var customerName = $("#customerName").val().trim();
+            var phoneNumber = $("#phoneNumber").val().trim();
+            var customerEmail = $("#customerEmail").val().trim();
+            var customerID = $("#customerID").val().trim();
+
+            var newReservation = new Reservation(customerName, phoneNumber, customerEmail, customerID);
+
+            $.get("/api/tables", function(data) {
+                if (data.length <= 5) {
+                    $.post("/api/tables", newReservation).then(function(data) {
+                        console.log(data);
+                        alert("Added reservation successfully!");
+                    });
+                } else {
+                    $.post("/api/waitlist", newReservation).then(function(data) {
+                        console.log(data);
+                        alert("Adding reservation to waitlist.");
+                    });
+                }
+            });
+        })
+
+
+        </script>
 
     </body>
 </html>

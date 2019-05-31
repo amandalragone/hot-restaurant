@@ -25,15 +25,6 @@ var waitList =[{
     customerID: "2"
 }];
 
-
-
-function Reservation(customerName, phoneNumber, customerEmail, customerID) {
-    this.customerName = customerName;
-    this.phoneNumber = phoneNumber;
-    this.customerEmail = customerEmail;
-    this.customerID = customerID;
-}
-
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "home.html"));
 
